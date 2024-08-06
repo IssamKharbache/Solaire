@@ -1,8 +1,11 @@
 import React from "react";
 
-const Button = ({ label, cn }) => {
+const Button = ({ label, cn, type }) => {
   return (
-    <button className={`py-2 px-6 rounded-sm  duration-200 ${cn ? cn : ""}`}>
+    <button
+      type={type}
+      className={`py-2 px-6 rounded-sm  duration-200 ${cn ? cn : ""}`}
+    >
       {label}
     </button>
   );
