@@ -1,12 +1,15 @@
-import React from "react";
-
-const Button = ({ label, cn, type }) => {
+"use client";
+const Button = ({ label, cn, type, onClick, icon }) => {
   return (
     <button
+      onClick={onClick}
       type={type}
-      className={`py-2 px-6 rounded-sm  duration-200 ${cn ? cn : ""}`}
+      className={`flex items-center justify-center  gap-2 py-2 px-6 rounded-sm  duration-200 ${
+        cn ? cn : ""
+      }`}
     >
-      {label}
+      {icon ? icon : ""}
+      <span>{label}</span>
     </button>
   );
 };

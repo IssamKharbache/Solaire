@@ -12,7 +12,7 @@ const RegisterPage = () => {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  //
+  //submit function
   const handleSubmit = async (e) => {
     setLoading(true);
     e.preventDefault();
