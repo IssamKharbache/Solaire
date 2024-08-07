@@ -20,6 +20,7 @@ const RegisterPage = () => {
     const fullName = e.target[0].value;
     const email = e.target[1].value;
     const password = e.target[2].value;
+    const plan = "free";
     //validation email
     if (!validateEmail(email)) {
       setError("Please enter a valid email");
@@ -41,6 +42,7 @@ const RegisterPage = () => {
           email,
           password,
           fullName,
+          plan,
         }),
       });
       if (res.status === 400) {

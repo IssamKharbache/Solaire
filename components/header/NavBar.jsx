@@ -19,6 +19,7 @@ const NavBar = () => {
       </div>
       {session ? (
         <div className="flex items-center gap-4">
+          <h1>{session?.user.plan}</h1>
           <Link
             href="/dashboard"
             className="flex items-center  gap-2 bg-blue-600 hover:bg-blue-700 transition text-white rounded py-2 px-3"

@@ -50,6 +50,7 @@ export const authOptions = {
             const newUser = new User({
               email: user.email,
               fullName: user.name,
+              plan: "free",
             });
             await newUser.save();
             return true;
@@ -61,18 +62,28 @@ export const authOptions = {
       }
     },
     async session({ session, token }) {
-      if (token) {
-        session.user.id = token.id;
-        session.user.name = token.name;
-        session.user.email = token.email;
+      //getting google auth users plan from db
+      let plan = "";
+      if (token.provider == "google") {
+        const sessionUser = await User.findOne({ email: session.user.email });
+        plan = sessionUser.plan;
+      } else {
+        plan = token.plan;
       }
+      //setting up session data from database
+      session.user.id = token.id;
+      session.user.name = token.name;
+      session.user.email = token.email;
+      session.user.plan = plan;
       return session;
     },
-    async jwt({ token, user }) {
+    async jwt({ token, user, account }) {
       if (user) {
         token.id = user.id;
-        token.name = user.name;
+        token.fullName = user.fullName;
         token.email = user.email;
+        token.plan = user.plan;
+        token.provider = account.provider;
       }
       return token;
     },
