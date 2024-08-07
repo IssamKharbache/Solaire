@@ -1,8 +1,51 @@
+"use client";
 import Button from "@/components/rootComponents/Button";
+import { validateEmail } from "@/utils/validateEmail";
 import Link from "next/link";
-import React from "react";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
 
 const RegisterPage = () => {
+  const [error, setError] = useState("");
+  const router = useRouter();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const fullName = e.target[0].value;
+    const email = e.target[1].value;
+    const password = e.target[2].value;
+
+    if (!validateEmail(email)) {
+      setError("Please enter a valid email");
+      return;
+    }
+    if (!password || password.length < 8) {
+      setError("Password is required and must be at least 8 characters");
+      return;
+    }
+    try {
+      const res = await fetch("/api/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+          fullName,
+        }),
+      });
+      if (res.status === 400) {
+        setError("User with this email already registered");
+      }
+      if (res.status === 200) {
+        setError("");
+        router.push("/login");
+      }
+    } catch (error) {
+      setError("Error, please try again");
+      console.log(error);
+    }
+  };
   return (
     <div className="flex  h-[calc(100vh-80px)] bg-slate-200 ">
       <div className="w-[450px] mx-auto  m-12 ">
@@ -10,7 +53,19 @@ const RegisterPage = () => {
           <h1 className="text-4xl text-center font-semibold mb-8">
             Create an account
           </h1>
-          <form className="flex flex-col gap-6 w-full justify-center">
+          <div className="">
+            {error ? (
+              <p className="text-center bg-red-500 text-white mb-8 py-2">
+                {error}
+              </p>
+            ) : (
+              ""
+            )}
+          </div>
+          <form
+            onSubmit={handleSubmit}
+            className="flex flex-col gap-6 w-full justify-center"
+          >
             <input
               required
               type="text"
@@ -21,13 +76,13 @@ const RegisterPage = () => {
               required
               type="text"
               placeholder="Email address"
-              className="h-16 border-2 border-gray-300 focus:border-yellow-400 outline-none px-4 rounded-md"
+              className={`h-16 border-2 border-gray-300 focus:border-yellow-400 outline-none px-4 rounded-m`}
             />
             <input
               required
               type="password"
               placeholder="Password"
-              className="h-16 border-2 border-gray-300 focus:border-yellow-400 outline-none px-4 rounded-md"
+              className={`h-16 border-2 border-gray-300 focus:border-yellow-400 outline-none px-4 rounded-md `}
             />
             <Button
               label="Sign up"
