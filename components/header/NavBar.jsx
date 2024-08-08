@@ -6,9 +6,14 @@ import BorderButton from "../rootComponents/BorderButton";
 import { signOut, useSession } from "next-auth/react";
 import { LuLayoutGrid } from "react-icons/lu";
 import { PiSignOutBold } from "react-icons/pi";
+import NavBarLoading from "./NavBarLoading";
 
 const NavBar = () => {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
+  if (status === "loading") {
+    return <NavBarLoading />;
+  }
+
   return (
     <div className="flex justify-between items-center px-6 py-4 h-20 bg-white">
       <div className="">Solaire</div>
@@ -19,7 +24,6 @@ const NavBar = () => {
       </div>
       {session ? (
         <div className="flex items-center gap-4">
-          <h1>{session?.user.plan}</h1>
           <Link
             href="/dashboard"
             className="flex items-center  gap-2 bg-blue-600 hover:bg-blue-700 transition text-white rounded py-2 px-3"

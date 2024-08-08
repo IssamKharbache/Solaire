@@ -6,6 +6,7 @@ import { useSession, signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import { FcGoogle } from "react-icons/fc";
 
 const LoginPage = () => {
   //states
@@ -97,11 +98,13 @@ const LoginPage = () => {
           </form>
           <div className="text-center text-gray-500 mt-4">- OR -</div>
           <button
+            className="flex items-center border border-gray-400 hover:bg-gray-200 transition rounded gap-3 justify-center mx-auto mt-4 w-full py-3"
             onClick={() => {
               signIn("google");
             }}
           >
-            Continue with google
+            <span>Continue with google</span>
+            <FcGoogle />
           </button>
           <h1 className="mt-4 text-sm gap-2 flex justify-center">
             Don't have an account ?
